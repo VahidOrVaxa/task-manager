@@ -34,4 +34,8 @@ public class TaskManager {
         return tasks.stream().filter(x -> x.getName().equals(name)).toList();
     }
 
+    public List<Task> searchTasksByDateOfCreation(final String date) {
+        return tasks.stream().filter(x -> x.getSimpleData().equals(date)).sorted().toList();
+    }
+
 }

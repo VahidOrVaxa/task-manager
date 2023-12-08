@@ -14,7 +14,7 @@ public class TaskManagerApp {
         int choice = 0;
         do {
             System.out.println("1 - Create task\n2 - Show current task\n" +
-                    "3 - Do current task\n4 - Search task by name");
+                    "3 - Do current task\n4 - Search task by name\n5 - Search task by date of creation");
             System.out.print("Input your choice: ");
             choice = scanner.nextInt();
             switch (choice) {
@@ -28,7 +28,10 @@ public class TaskManagerApp {
                     doTask();
                     break;
                 case 4:
-                    showAllTaskByName();
+                    showAllTasksByName();
+                    break;
+                case 5:
+                    showAllTasksByDateOfCreation();
                     break;
             }
         } while (choice!=0);
@@ -52,13 +55,20 @@ public class TaskManagerApp {
                 "==================================");
     }
 
-    private static void showAllTaskByName() {
+    private static void showAllTasksByName() {
         System.out.print("Input name of task: ");
         scanner.nextLine();
         for (Task task : manager.searchTasksByName(scanner.nextLine())) {
             System.out.println(task);
         }
+    }
 
+    private static void showAllTasksByDateOfCreation() {
+        System.out.print("Input date of task: ");
+        scanner.nextLine();
+        for (Task task : manager.searchTasksByDateOfCreation(scanner.nextLine())) {
+            System.out.println(task);
+        }
     }
 
 }
