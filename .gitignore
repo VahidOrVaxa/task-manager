@@ -1,3 +1,5 @@
 # Default ignored files
 /shelf/
 /workspace.xml
+src/target/
+src/main/resources/
