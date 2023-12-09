@@ -4,7 +4,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Task implements Comparable{
+public class Task implements Comparable {
+    //private int ID;
     private String name;
     private String description;
     private Date currentDate;

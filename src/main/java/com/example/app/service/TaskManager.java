@@ -1,5 +1,6 @@
 package com.example.app.service;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -22,12 +23,12 @@ public class TaskManager {
         }
     }
 
-    public Task getCurrentTask() throws NullPointerException {
-        return tasks.element();
+    public Task getCurrentTask() {
+        return tasks.peek();
     }
 
-    public Task doCurrentTask() throws NullPointerException {
-        return tasks.remove();
+    public Task doCurrentTask() {
+        return tasks.poll();
     }
 
     public List<Task> searchTasksByName(final String name) {
@@ -36,6 +37,31 @@ public class TaskManager {
 
     public List<Task> searchTasksByDateOfCreation(final String date) {
         return tasks.stream().filter(x -> x.getSimpleData().equals(date)).sorted().toList();
+    }
+
+    public boolean deleteTask(String name) {
+        Iterator<Task> taskIterator = tasks.iterator();
+        boolean trigger = false;
+        while (taskIterator.hasNext()) {
+            if (taskIterator.next().getName().equals(name)) {
+                taskIterator.remove();
+                trigger = true;
+            }
+        }
+        return trigger;
+    }
+
+    public boolean deleteTask(String name, String date) {
+        Iterator<Task> taskIterator = tasks.iterator();
+        boolean trigger = false;
+        while (taskIterator.hasNext()) {
+            Task task = taskIterator.next();
+            if (task.getName().equals(name) && task.getSimpleData().equals(date)) {
+                taskIterator.remove();
+                trigger = true;
+            }
+        }
+        return trigger;
     }
 
 }
