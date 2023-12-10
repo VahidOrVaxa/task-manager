@@ -36,7 +36,7 @@ public class TaskManager {
     }
 
     public List<Task> searchTasksByDateOfCreation(final String date) {
-        return tasks.stream().filter(x -> x.getSimpleData().equals(date)).sorted().toList();
+        return tasks.stream().filter(x -> x.getSimpleCreationDate().equals(date)).sorted().toList();
     }
 
     public boolean deleteTask(String name) {
@@ -56,7 +56,7 @@ public class TaskManager {
         boolean trigger = false;
         while (taskIterator.hasNext()) {
             Task task = taskIterator.next();
-            if (task.getName().equals(name) && task.getSimpleData().equals(date)) {
+            if (task.getName().equals(name) && task.getSimpleCreationDate().equals(date)) {
                 taskIterator.remove();
                 trigger = true;
             }
