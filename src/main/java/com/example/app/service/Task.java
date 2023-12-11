@@ -71,11 +71,11 @@ public class Task implements Comparable {
 
     @Override
     public String toString() {
-        return "Task ID:" + ID + "\n" +
+        return "Task ID: " + ID + "\n" +
                 "Name: " + name + "\n" +
                 "Description: " + description + "\n" +
                 "Data of creation: " + creationDate + "\n" +
-                "Deadline: " + (deadline==null ? "No deadline!" : deadline) + "\n" +
+                "Deadline: " + (deadline == null ? "No deadline!" : deadline) + "\n" +
                 "Priority: " + (priority == 99 ? "No priority!" : priority) + "\n" +
                 "==================================\n";
     }

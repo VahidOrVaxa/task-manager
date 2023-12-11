@@ -12,11 +12,11 @@ public class TaskManagerApp {
 
 
     public static void main(String[] args) {
-        LogManager.getLogManager().reset();
+//        LogManager.getLogManager().reset();
         int choice = 0;
         do {
             System.out.println("1 - Create simple task\n2 - Create priority task\n" +
-                    "3 - Create task with deadline\n4 - Show current task\n5 - Show all tasks" +
+                    "3 - Create task with deadline\n4 - Show current task\n5 - Show all tasks\n" +
                     "6 - Do current task\n7 - Search task by name\n8 - Search task by date of creation\n" +
                     "9 - Delete task by ID\n10 - Delete task by name\n" +
                     "11 - Delete task by name and date of creation\n0 - Exit");

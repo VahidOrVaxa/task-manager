@@ -33,7 +33,7 @@ public class TaskManager {
             tasks.offer(task);
             session = factory.getCurrentSession();
             session.beginTransaction();
-            session.save(tasks);
+            session.save(task);
             session.getTransaction().commit();
             return true;
         } catch (NullPointerException exception) {
@@ -72,19 +72,35 @@ public class TaskManager {
                 trigger = true;
             }
         }
+
+        if (trigger) {
+            session = factory.getCurrentSession();
+            session.beginTransaction();
+            session.createQuery("delete Task " +
+                    "where name = '" + name + "'").executeUpdate();
+            session.getTransaction().commit();
+        }
+
         return trigger;
     }
-
+    //Not recommended for use
+    @Deprecated
     public boolean deleteTask(String name, String date) {
         Iterator<Task> taskIterator = tasks.iterator();
         boolean trigger = false;
+        session = factory.getCurrentSession();
+        session.beginTransaction();
+
         while (taskIterator.hasNext()) {
             Task task = taskIterator.next();
             if (task.getName().equals(name) && task.getSimpleCreationDate().equals(date)) {
                 taskIterator.remove();
+                session.delete(task);
                 trigger = true;
             }
         }
+        session.getTransaction().commit();
+
         return trigger;
     }
 
@@ -92,8 +108,15 @@ public class TaskManager {
         Iterator<Task> taskIterator = tasks.iterator();
         boolean trigger = false;
         while (taskIterator.hasNext()) {
-            if (taskIterator.next().getID() == ID) {
+            Task task = taskIterator.next();
+            if (task.getID() == ID) {
                 taskIterator.remove();
+
+                session = factory.getCurrentSession();
+                session.beginTransaction();
+                session.delete(task);
+                session.getTransaction().commit();
+
                 trigger = true;
             }
         }
