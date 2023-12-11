@@ -1,5 +1,9 @@
 package com.example.app.service;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -7,20 +11,40 @@ import java.util.Queue;
 
 public class TaskManager {
     private Queue<Task> tasks;
+    private SessionFactory factory;
+    private Session session;
 
     public TaskManager() {
-        tasks = new PriorityQueue<>();
+        factory = new Configuration()
+                .configure("hibernate.cfg.xml")
+                .addAnnotatedClass(Task.class)
+                .buildSessionFactory();
+
+        session = factory.getCurrentSession();
+        session.beginTransaction();
+        List<Task> list = session.createQuery("from Task").getResultList();
+        session.getTransaction().commit();
+
+        tasks = new PriorityQueue<>(list);
     }
 
     public boolean addTask(Task task) {
         try {
             tasks.offer(task);
+            session = factory.getCurrentSession();
+            session.beginTransaction();
+            session.save(tasks);
+            session.getTransaction().commit();
             return true;
         } catch (NullPointerException exception) {
             exception.printStackTrace();
             System.err.println("There are no object in function!");
             return false;
         }
+    }
+
+    public List<Task> getAllTasks() {
+        return tasks.stream().sorted().toList();
     }
 
     public Task getCurrentTask() {
@@ -62,6 +86,22 @@ public class TaskManager {
             }
         }
         return trigger;
+    }
+
+    public boolean deleteTask(int ID) {
+        Iterator<Task> taskIterator = tasks.iterator();
+        boolean trigger = false;
+        while (taskIterator.hasNext()) {
+            if (taskIterator.next().getID() == ID) {
+                taskIterator.remove();
+                trigger = true;
+            }
+        }
+        return trigger;
+    }
+
+    public void destroy() {
+        factory.close();
     }
 
 }

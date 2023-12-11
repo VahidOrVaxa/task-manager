@@ -12,7 +12,7 @@ import java.util.Date;
 @Entity
 @Table(name = "tasks")
 public class Task implements Comparable {
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     @Id
     @Column(name = "ID")
     private int ID;
@@ -62,6 +62,8 @@ public class Task implements Comparable {
         int result = priority - task.priority;
         if (result != 0) {
             return result;
+        } else if (deadline!=null) {
+            return deadline.compareTo(task.deadline);
         } else {
             return creationDate.compareTo(task.creationDate);
         }
@@ -69,7 +71,7 @@ public class Task implements Comparable {
 
     @Override
     public String toString() {
-        return "Task:\n" +
+        return "Task ID:" + ID + "\n" +
                 "Name: " + name + "\n" +
                 "Description: " + description + "\n" +
                 "Data of creation: " + creationDate + "\n" +

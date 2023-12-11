@@ -4,6 +4,7 @@ import com.example.app.service.Task;
 import com.example.app.service.TaskManager;
 
 import java.util.Scanner;
+import java.util.logging.LogManager;
 
 public class TaskManagerApp {
     private static Scanner scanner = new Scanner(System.in);
@@ -11,13 +12,16 @@ public class TaskManagerApp {
 
 
     public static void main(String[] args) {
+        LogManager.getLogManager().reset();
         int choice = 0;
         do {
             System.out.println("1 - Create simple task\n2 - Create priority task\n" +
-                    "3 - Create task with deadline\n4 - Show current task\n" +
-                    "5 - Do current task\n6 - Search task by name\n7 - Search task by date of creation\n" +
-                    "8 - Delete task by name\n9 - Delete task by name and date of creation\n0 - Exit");
+                    "3 - Create task with deadline\n4 - Show current task\n5 - Show all tasks" +
+                    "6 - Do current task\n7 - Search task by name\n8 - Search task by date of creation\n" +
+                    "9 - Delete task by ID\n10 - Delete task by name\n" +
+                    "11 - Delete task by name and date of creation\n0 - Exit");
             System.out.print("Input your choice: ");
+
             choice = scanner.nextInt();
             switch (choice) {
                 case 1:
@@ -30,25 +34,33 @@ public class TaskManagerApp {
                     createTaskWithDeadline();
                     break;
                 case 4:
-                    showTask();
+                    showCurrentTask();
                     break;
                 case 5:
-                    doTask();
+                    showAllTasks();
                     break;
                 case 6:
-                    showAllTasksByName();
+                    doTask();
                     break;
                 case 7:
-                    showAllTasksByDateOfCreation();
+                    showAllTasksByName();
                     break;
                 case 8:
-                    deleteTaskByName();
+                    showAllTasksByDateOfCreation();
                     break;
                 case 9:
+                    deleteTaskByID();
+                    break;
+                case 10:
+                    deleteTaskByName();
+                    break;
+                case 11:
                     deleteTaskByNameAndDate();
                     break;
             }
         } while (choice!=0);
+
+        manager.destroy();
     }
 
     private static void createTask() {
@@ -84,9 +96,17 @@ public class TaskManagerApp {
         manager.addTask(new Task(name, description, priority, deadline));
     }
 
-    private static void showTask() {
+    private static void showCurrentTask() {
         Task task = manager.getCurrentTask();
         System.out.println(task == null ? "\nTask manager is empty!\n" : task);
+    }
+
+    private static void showAllTasks() {
+        System.out.println("All tasks in manager: ");
+        for (Task task :
+                manager.getAllTasks()) {
+            System.out.println(task);
+        }
     }
 
     private static void doTask() {
@@ -133,6 +153,15 @@ public class TaskManagerApp {
             System.out.println("\nTask(s) was/were deleted!\n");
         else
             System.out.println("\nThere aren't task with this name and this date!\n");
+    }
+
+    private static void deleteTaskByID() {
+        System.out.print("Input ID of task: ");
+
+        if (manager.deleteTask(scanner.nextInt()))
+            System.out.println("\nTask was deleted!\n");
+        else
+            System.out.println("\nThere isn't task with this ID!\n");
     }
 
 }
