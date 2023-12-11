@@ -1,0 +1,5 @@
+com\example\app\gui\UserInterface.class
+com\example\app\TaskManagerApp.class
+com\example\app\service\Task.class
+com\example\app\service\TaskManager.class
+com\example\app\TestClass.class
